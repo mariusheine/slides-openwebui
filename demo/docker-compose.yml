@@ -1,0 +1,31 @@
+services:
+  open-webui:
+    image: ghcr.io/open-webui/open-webui
+    ports:
+      - 0.0.0.0:8080:8080
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - open-webui:/app/backend/data
+
+  ollama:
+    image: ollama/ollama
+    ports:
+      - 0.0.0.0:11434:11434
+    volumes:
+      - ollama:/root/.ollama
+
+  pipelines:
+    image: ghcr.io/open-webui/pipelines:main
+    ports:
+      - 0.0.0.0:9099:9099
+    volumes:
+      - pipelines:/app/pipelines
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    restart: always
+
+volumes:
+  open-webui:
+  pipelines:
+  ollama:
